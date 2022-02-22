@@ -2,6 +2,9 @@
 from enum import Enum, auto
 from random import randint
 
+from math import exp
+from random import random
+
 """Module de UE
 
 Module définissant la classe UE, qui représente l'appareil d'un usager.
@@ -48,7 +51,64 @@ class UE:
     #To complete with module 1 implementation
 
     ################ Module 2 ################
-    
+    def set_propagation(self, distance, scenario):
+
+        if scenario == 'UMi':
+
+            if distance <= 18:
+
+                self.is_LOS = True
+
+            else:
+
+                prob = 18 / distance + exp(-distance / 36) * (1 - 18 / distance)
+
+                self.is_LOS = random() < prob
+
+        else:  ##RMa
+
+            if distance <= 10:
+
+                self.is_LOS = True
+
+            else:
+
+                prob = exp(- (distance - 10) / 1000)
+
+                self.is_LOS = random() < prob
+
+    def force_propagation(self, propagation):
+        if propagation is 'LOS':
+            self.is_LOS = True
+        else:
+            self.is_LOS = False
+
+    def get_propagation(self):
+
+        if self.is_LOS:
+            return 'LOS'
+        else:
+            return 'NLOS'
+
+    def get_height(self):
+        return self.height
+
+    def set_pathloss(self, value):
+        self.pathloss = value
+
+    def get_pathloss(self):
+        return self.pathloss
+
+    def get_coord(self):
+        return self.coord
+
+    def get_id(self):
+        return self.id
+
+    def get_app(self):
+        return self.app_name
+
+
     @classmethod
     def add_access_info(cls, access_info):
         """Initialise les attributs d'accès des UEs"""

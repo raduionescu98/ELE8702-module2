@@ -1,5 +1,9 @@
 from math import sqrt
 
+import random
+
+import scipy.stats as stats
+
 """Position utility module
 
 This module contains position related functions
@@ -44,6 +48,15 @@ def random_coord(n:int, map_size:int) -> list:
     """
     #TODO
 
+    # TODO
+    n_by_side = int(sqrt(n))
+    points = []
+    for x in range(n_by_side):
+        for y in range(n_by_side):
+            points.append((random.uniform(0, sqrt(map_size) * 1000), random.uniform(0, sqrt(map_size) * 1000)))
+    return points
+
+
 def get_distance(coord1:tuple, coord2:tuple):
     """Cacule la distance L2 entre 2 points
 
@@ -55,5 +68,9 @@ def get_distance(coord1:tuple, coord2:tuple):
         float: Distance L2
     """
     #TODO
+    L2 = sqrt((coord2[1] - coord1[1])**2 + (coord2[0] - coord1[0]) ** 2)
+
+
+    return L2
 
 
