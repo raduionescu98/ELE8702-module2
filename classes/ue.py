@@ -108,7 +108,6 @@ class UE:
     def get_app(self):
         return self.app_name
 
-
     @classmethod
     def add_access_info(cls, access_info):
         """Initialise les attributs d'accès des UEs"""
@@ -200,6 +199,19 @@ class UE:
                 le préambule, la modulation temporel et le slot.
 
         """
+
+        number_of_slots = len(valid_slots)
+
+        index = randint(0, number_of_slots - 1)
+
+        index = 3 + index
+
+        slot_index = cls.rach_structure[slot_index]
+
+        preamble_index = cls.rach_structure[0]
+
+
+
         #TODO
         return (preamble_index, time_mod_index, slot_index)
 

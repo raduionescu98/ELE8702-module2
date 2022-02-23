@@ -40,14 +40,14 @@ if __name__ == '__main__':
     for index in range(len(pos_app1)):
         ues_app1.append(UE('app1',pos_app1[index],INPUT_DICT['ue_height']))
 
-    print(f"Number of users app1 : {len(ues_app1)}")
+    #print(f"Number of users app1 : {len(ues_app1)}")
 
     ues_app2 = []
 
     for index in range(len(pos_app2)):
         ues_app2.append(UE('app2',pos_app2[index],INPUT_DICT['ue_height']))
 
-    print(f"Number of users app1 : {len(ues_app2)}")
+    #print(f"Number of users app1 : {len(ues_app2)}")
 
     users = ues_app1 + ues_app2
 
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     for index in range(len(pos_antennas)):
         antennas.append(Antenna(pos_antennas[index],INPUT_DICT['scenario'],INPUT_DICT['frequency'],INPUT_DICT['antenna_height']))
-    print(f"Number of antennas is : {len(antennas)}")
+    #print(f"Number of antennas is : {len(antennas)}")
 
 
     pathloss_list = []
@@ -84,12 +84,12 @@ if __name__ == '__main__':
         number_of_connections += 1
         pathloss_list.append(users[i].get_pathloss())
         distances_list.append(best_distance)
-        print(f"User with id : {users[i].get_id()} has propagation {users[i].get_propagation()} and is connected with antenna {antennas[best_antenna].get_id()}(distance : {antennas[best_antenna].get_user_distance(users[i].get_id())} and pathloss = {users[i].get_pathloss()})")
+        #print(f"User with id : {users[i].get_id()} has propagation {users[i].get_propagation()} and is connected with antenna {antennas[best_antenna].get_id()}(distance : {antennas[best_antenna].get_user_distance(users[i].get_id())} and pathloss = {users[i].get_pathloss()})")
 
 
-    print(f"Le nombre de connection est {number_of_connections} pour {len(users)} utilisateurs")
+    #print(f"Le nombre de connection est {number_of_connections} pour {len(users)} utilisateurs")
 
-    print(f"Le nombre de pathloss et le nombre de distance sont respectivement {len(pathloss_list)} et {len(distances_list)} pour {len(users)} utilisateurs")
+    #print(f"Le nombre de pathloss et le nombre de distance sont respectivement {len(pathloss_list)} et {len(distances_list)} pour {len(users)} utilisateurs")
 
     ues = users
 
@@ -113,6 +113,15 @@ if __name__ == '__main__':
 
     access_info['rach_structure'] = rach_table[
         INPUT_DICT['prach_config_index']]
+
+
+    print("Rach structure is {}R : ".format(access_info['rach_structure']))
+
+    rach_structure = access_info['rach_structure']
+
+    print("*******")
+    print(rach_structure[0])
+    print("*******")
 
     UE.add_access_info(access_info)
 
