@@ -149,8 +149,8 @@ if __name__ == '__main__':
     #Update loop
     for time_ms in range(INPUT_DICT['simulation_time']*1000):
         #Go through all antennas to update
-        for antenna in antennas.values():
-            antenna.update(time_ms)
+        for element in antennas:
+            element.update(time_ms)
     tot_results = AppResults('all')
     for results in app_results.values():
         tot_results = tot_results + results

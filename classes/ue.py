@@ -37,6 +37,7 @@ class UE:
 
         self.is_LOS = True
         self.pathloss = float('inf')
+        self.inactive_counter = 0
         self.recv_power = -float('inf')
         self.id = UE.id_counter
         UE.id_counter += 1
@@ -51,6 +52,14 @@ class UE:
     #To complete with module 1 implementation
 
     ################ Module 2 ################
+
+    def increment_inactive_timer(self):
+        self.inactive_counter += 1
+    def reset_inactive_timer(self):
+        self.inactive_counter = 0
+    def get_inactive_timer(self):
+        return self.inactive_timer
+
     def set_propagation(self, distance, scenario):
 
         if scenario == 'UMi':
@@ -135,7 +144,7 @@ class UE:
 
         Les informations de paquets sont un tuple indiquant le temps
         de génération et la longeur du paquet en bits. Le prochain 
-        paquet à envoyé est enregistré dans _next_paquet, les autres 
+        paquet à envoyer est enregistré dans _next_paquet, les autres
         dans paquet_info.
         
         """
@@ -206,9 +215,9 @@ class UE:
 
         index = 3 + index
 
-        slot_index = cls.rach_structure[slot_index]
+        slot_index = self.rach_structure[index]
 
-        preamble_index = cls.rach_structure[0]
+        preamble_index = self.rach_structure[0]
 
 
 
@@ -233,6 +242,11 @@ class UE:
         IDLE ou INACTIVE dépendemment du nombre du UE 
         inactive déjà connecté
         """
+        if self.status == UEStatus.RRC_CONNECTED :
+            self.status = UEStatus.RRC_INACTIVE
+        elif self.status == UEStatus.RRC_INACTIVE :
+            self.status = UEStatus.RRC_IDLE
+
         #TODO
 
 
@@ -251,21 +265,30 @@ class UE:
         """
 
         # Si le UE est connecté, envoie un paquet ou revient enmode IDLE/INACTIVE
-        if self.status == UEStatus.RRC_CONNECTED: pass
+        if self.status == UEStatus.RRC_CONNECTED:
+
             # Si le paquet est inactive pendant trop longtemps -> déconnexion
+            if self._next_packet :
+                self._send_packet()
+            else:
+                self.increment_inactive_timer()
+
+            if self.get_inactive_timer() >= self.inactivity_timer :
+                self.status =  UEStatus.RRC_INACTIVE
 
             # S'il y a un paquet à transmettre -> transmet le paquet
-
             
         # Le UE est en mode IDLE ou INACTIVE mais nécessite une connection
-        if self.status in (UEStatus.RRC_IDLE, UEStatus.RRC_INACTIVE): pass
+        if self.status in (UEStatus.RRC_IDLE, UEStatus.RRC_INACTIVE):
+            self.status = UEStatus.CONNECTING
 
         # Si le UE est en train de se connecter, vérifier s'il a terminé sa procédure de connexion
-        if self.status == UEStatus.CONNECTING: pass
+        if self.status == UEStatus.CONNECTING:
+
             # Collision -> Attend un temps de backoff avant de se reconnecter
 
             # Pas de collision -> se connecte
-
+            self.status = UEStatus.RRC_CONNECTED
 
 class UEStatus(Enum):
     #État de connexion possible pour les UEs
