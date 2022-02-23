@@ -5,6 +5,8 @@ from random import randint
 from math import exp
 from random import random
 
+INACTIVE_FLAG = 1
+
 """Module de UE
 
 Module définissant la classe UE, qui représente l'appareil d'un usager.
@@ -136,6 +138,21 @@ class UE:
         Vérifie qu'un UE peut faire un RA en fonction de sa 
         sign
         """
+
+        if int(subframe/10) % rach_structure[1] == rach_structure[2] : # valid frame
+            
+        else :
+            return False
+
+
+        #if time_lapse (int(subframe/10)) % x == y, valid frame, then check subframee
+        # if true check the subframe
+
+
+
+        # if not return false
+
+
         #TODO
         
 
@@ -235,16 +252,21 @@ class UE:
             self._next_packet = (float('inf'),0)
         return packet
 
-    def set_disconnected(self) -> None:
+    def set_disconnected(self,disconnection_flag) -> None:
         """Effectue la déconnexion d'un UE
         
         Permet au UE de passer du mode CONNECTED au mode 
         IDLE ou INACTIVE dépendemment du nombre du UE 
         inactive déjà connecté
         """
+
+        #le nombre d'inactive
         if self.status == UEStatus.RRC_CONNECTED :
-            self.status = UEStatus.RRC_INACTIVE
-        elif self.status == UEStatus.RRC_INACTIVE :
+            if disconnection_flag == INACTIVE_FLAG :
+                self.status = UEStatus.RRC_INACTIVE
+            else :
+                self.status = UEStatus.RRC_IDLE
+        else  :
             self.status = UEStatus.RRC_IDLE
 
         #TODO

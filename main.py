@@ -115,7 +115,7 @@ if __name__ == '__main__':
         INPUT_DICT['prach_config_index']]
 
 
-    print("Rach structure is {}R : ".format(access_info['rach_structure']))
+    print("Rach structure is {} : ".format(access_info['rach_structure']))
 
     rach_structure = access_info['rach_structure']
 
