@@ -139,9 +139,24 @@ class UE:
         sign
         """
 
-        if int(subframe/10) % rach_structure[1] == rach_structure[2] : # valid frame
-            
+        if int(subframe/10) % rach_structure[1] == rach_structure[2] :
+            # valid frame
+            if self.scs == 60 :
+
+                for slot_number in rach_structure[3].split(",") :
+                    if subframe  ==int( slot_number/4):
+                        return True
+                return False
+
+            else:
+                for slot_number in rach_structure[3].split(","):
+                    if subframe == slot_number: #15 khz
+                        return True
+
+                return False
+
         else :
+
             return False
 
 
@@ -204,7 +219,10 @@ class UE:
         Args:
             time_ms (int): Temps simulé depuis le début de la 
                 simulation (ms)
+        va appeler is_valid
+        si valid on le met a connecting
         
+        et select_preamble
         """
         #TODO
         pass
