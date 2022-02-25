@@ -123,7 +123,11 @@ if __name__ == '__main__':
     print(rach_structure[0])
     print("*******")
 
+
+
     UE.add_access_info(access_info)
+
+    print("Inactivity timer is : {}".format(ues[5].get_inactivity_timer()))
 
     #Create results per app
     app_results = {}

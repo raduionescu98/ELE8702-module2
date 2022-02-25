@@ -55,12 +55,12 @@ class UE:
 
     ################ Module 2 ################
 
-    def increment_inactive_timer(self):
+    def increment_inactive_counter(self):
         self.inactive_counter += 1
-    def reset_inactive_timer(self):
+    def reset_inactive_counter(self):
         self.inactive_counter = 0
-    def get_inactive_timer(self):
-        return self.inactive_timer
+    def get_inactive_counter(self):
+        return self.inactive_counter
 
     def set_propagation(self, distance, scenario):
 
@@ -130,6 +130,10 @@ class UE:
         cls.max_inactive_ues = access_info['max_inactive_ues']
         cls.rach_structure = access_info['rach_structure']
 
+    def get_inactivity_timer(self):
+        return self.inactivity_timer
+
+
     def is_valid_preamble_subframe(self,
                                    rach_structure: list,
                                    subframe: int) -> bool:
@@ -138,25 +142,19 @@ class UE:
         Vérifie qu'un UE peut faire un RA en fonction de sa 
         sign
         """
-
         if int(subframe/10) % rach_structure[1] == rach_structure[2] :
             # valid frame
             if self.scs == 60 :
-
                 for slot_number in rach_structure[3].split(",") :
                     if subframe  ==int( slot_number/4):
                         return True
                 return False
-
             else:
                 for slot_number in rach_structure[3].split(","):
                     if subframe == slot_number: #15 khz
                         return True
-
                 return False
-
         else :
-
             return False
 
 
@@ -221,7 +219,7 @@ class UE:
                 simulation (ms)
         va appeler is_valid
         si valid on le met a connecting
-        
+
         et select_preamble
         """
         #TODO
@@ -254,7 +252,7 @@ class UE:
 
         preamble_index = self.rach_structure[0]
 
-
+        time_mod_index = self.rach_structure[6]
 
         #TODO
         return (preamble_index, time_mod_index, slot_index)
@@ -311,17 +309,14 @@ class UE:
             if self._next_packet :
                 self._send_packet()
             else:
-                self.increment_inactive_timer()
+                self.increment_inactive_counter()
 
-            if self.get_inactive_timer() >= self.inactivity_timer :
+            if self.get_inactive_counter() >= self.inactivity_timer :
                 self.status =  UEStatus.RRC_INACTIVE
-
             # S'il y a un paquet à transmettre -> transmet le paquet
-            
         # Le UE est en mode IDLE ou INACTIVE mais nécessite une connection
         if self.status in (UEStatus.RRC_IDLE, UEStatus.RRC_INACTIVE):
             self.status = UEStatus.CONNECTING
-
         # Si le UE est en train de se connecter, vérifier s'il a terminé sa procédure de connexion
         if self.status == UEStatus.CONNECTING:
 
@@ -329,6 +324,8 @@ class UE:
 
             # Pas de collision -> se connecte
             self.status = UEStatus.RRC_CONNECTED
+
+
 
 class UEStatus(Enum):
     #État de connexion possible pour les UEs
