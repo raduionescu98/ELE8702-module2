@@ -229,32 +229,23 @@ class UE:
     def _select_preamble(self, valid_slots) -> int:
         """Sélectionne un préambule valide
 
-        Sélectionne un format de préambule aléatoirement parmis 
-        l'ensemble de préambule possible.
+             Sélectionne un format de préambule aléatoirement parmis
+             l'ensemble de préambule possible.
 
-        Args:
-            valid_slots (list): List d'entier représentant les 
-                slots de transmission valides.
+             Args:
+                 valid_slots (list): List d'entier représentant les
+                     slots de transmission valides.
 
-        Return:
-            (int,int,int): Trois index représentant respectivement 
-                le préambule, la modulation temporel et le slot.
+             Return:
+                 (int,int,int): Trois index représentant respectivement
+                     le préambule, la modulation temporel et le slot.
+             """
+        # translate
+        # TODO
 
-        """
-
-        number_of_slots = len(valid_slots)
-
-        index = randint(0, number_of_slots - 1)
-
-        index = 3 + index
-
-        slot_index = self.rach_structure[index]
-
-        preamble_index = self.rach_structure[0]
-
-        time_mod_index = self.rach_structure[6]
-
-        #TODO
+        preamble_index = randint(0, UE.number_of_preambles - 1)
+        time_mod_index = randint(0, N - 1)
+        slot_index = valid_slots[randint(0, len(valid_slots) - 1)]
         return (preamble_index, time_mod_index, slot_index)
 
     def _send_packet(self):

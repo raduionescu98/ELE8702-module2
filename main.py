@@ -6,12 +6,10 @@ from utilities.results import AppResults
 from utilities.stochastic import gen_packets
 import utilities.position as pos
 
-
 import numpy as np
 from scipy.stats import uniform
 
 """Main module
-
 """
 if __name__ == '__main__':
     ################ Module 1 ################
@@ -122,8 +120,6 @@ if __name__ == '__main__':
     print("*******")
     print(rach_structure[0])
     print("*******")
-
-
 
     UE.add_access_info(access_info)
 
