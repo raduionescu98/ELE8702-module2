@@ -227,6 +227,7 @@ class UE:
 
 
     def _select_preamble(self, valid_slots) -> int:
+
         """Sélectionne un préambule valide
 
              Sélectionne un format de préambule aléatoirement parmis
@@ -240,11 +241,11 @@ class UE:
                  (int,int,int): Trois index représentant respectivement
                      le préambule, la modulation temporel et le slot.
              """
-        # translate
         # TODO
 
-        preamble_index = randint(0, UE.number_of_preambles - 1)
-        time_mod_index = randint(0, N - 1)
+        preamble_index = randint(0, self.number_of_preambles - 1)
+        #time_mod_index = randint(0, N - 1)
+        time_mod_index = self.rach_structure[6]
         slot_index = valid_slots[randint(0, len(valid_slots) - 1)]
         return (preamble_index, time_mod_index, slot_index)
 
